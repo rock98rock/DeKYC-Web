@@ -14,12 +14,15 @@ app.get('/', function (req, res) {
   res.render('index')
 })
 
-server.listen(5000);
-//app.listen(3000, function () {
-//  console.log('Example app listening on port 3000!')
-//})
+app.set('port', (process.env.PORT || 5000));
 
-console.log('Server is running on port 3000');
+//For avoidong Heroku $PORT error
+app.get('/', function(request, response) {
+    var result = 'App is running'
+    response.send(result);
+}).listen(app.get('port'), function() {
+    console.log('App is running, server is listening on port ', app.get('port'));
+});
 
 const sleep = (milliseconds) => {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
