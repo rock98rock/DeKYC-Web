@@ -1,0 +1,73 @@
+h2 {
+  font-size: 45px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.column {
+  float: left;
+  width: 42%;
+  padding: 5px;
+}
+
+/* Clearfix (clear floats) */
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Create two equal columns that floats next to each other */
+.bcolumn {
+  float: left;
+  width: 50%;
+  padding: 10px;
+}
+
+/* Clear floats after the columns */
+.brow:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.line {
+  width: 35px;
+  height: 5px;
+  background-color: #ec1c24;
+  margin: 6px 0;
+}
+
+.line-top {
+  width: 35px;
+  height: 5px;
+  background-color: #ec1c24;
+  margin: 6px 0;
+  margin-top: 10px;
+}
+
+#navigation {
+  background-color: white;
+}
+
+#body {
+  margin: 0;
+  background-image: url("blur.png");
+}
+
+#qr {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 17px;
+}
+
+#bleft {
+  padding-left: 50px;
+}
+
+#bright {
+  border-left: 3px solid;
+}
