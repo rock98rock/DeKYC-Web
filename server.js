@@ -4,6 +4,7 @@ require("firebase/database");
 var bodyParser = require('body-parser');
 const app = express();
 var server = require('http').Server(app);
+var io = require('socket.io')(server);
 var nemHash=[];
 var transMessage=[];
 
@@ -12,7 +13,6 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
-app.set('port', (process.env.PORT || 5000));
 
 server.listen(5000)
 //For avoidong Heroku $PORT error
@@ -150,7 +150,7 @@ async function getHashMessage() {
 getHashMessage();
 
 async function checkForData() {
-  var io = require('socket.io').listen(server);
+  
   var flag=0;
   while(true) {
     nemHash=[];
@@ -170,7 +170,7 @@ async function checkForData() {
       console.log('Hash detected');
       getHashMessage();
 
-      io.sockets.on('connection', function (socket) {
+      io.on('connection', function (socket) {
             socket.emit('message', transMessage[0]+"xd");
       });
 
@@ -178,7 +178,7 @@ async function checkForData() {
     else {
       console.log('Hash not detected');
       readUserData();
-      io.sockets.on('connection', function (socket) {
+      io.on('connection', function (socket) {
             socket.emit('message', 'Data cannot be retrieved!');
       });
     }
