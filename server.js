@@ -7,20 +7,20 @@ var server = require('http').Server(app);
 var nemHash=[];
 var transMessage=[];
 
+
 app.use(bodyParser.json());
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
-
 app.set('port', (process.env.PORT || 5000));
 
+server.listen(5000)
 //For avoidong Heroku $PORT error
 app.get('/', function(request, response) {
-    var result = 'App is running'
-    response.send(result);
-}).listen(app.get('port'), function() {
-    console.log('App is running, server is listening on port ', app.get('port'));
+    response.render('index');
 });
+
+
 
 const sleep = (milliseconds) => {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
@@ -171,7 +171,7 @@ async function checkForData() {
       getHashMessage();
 
       io.sockets.on('connection', function (socket) {
-            socket.emit('message', transMessage[0]);
+            socket.emit('message', transMessage[0]+"xd");
       });
 
     }
