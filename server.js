@@ -4,21 +4,27 @@ require("firebase/database");
 var bodyParser = require('body-parser');
 const app = express();
 var server = require('http').Server(app);
-var io = require('socket.io')(server);
+
 var nemHash=[];
 var transMessage=[];
 
 
 app.use(bodyParser.json());
 app.use(express.static('public'));
+
 app.set('view engine', 'ejs');
+app.set('port', (process.env.PORT || 5000));
 
-
-server.listen(5000)
-//For avoidong Heroku $PORT error
-app.get('/', function(request, response) {
-    response.render('index');
+app.get('/', function (req, res) {
+  res.render('index')
+}).listen(app.get('port'), function() {
+  console.log('App is running, server is listening on port ', app.get('port'));
 });
+
+server.listen(3000);
+//app.listen(3000, function () {
+//  console.log('Example app listening on port 3000!')
+//})
 
 
 
@@ -144,14 +150,14 @@ async function getHashMessage() {
               transMessage.push(fmtmsg);
   						},function(err){
                 nemHash[0]='';
-  						  //console.log(err);
+  						  console.log(err);
   					})
 }
 getHashMessage();
 
 async function checkForData() {
-  
-  var flag=0;
+  var io = require('socket.io').listen(server);
+
   while(true) {
     nemHash=[];
 
@@ -167,18 +173,19 @@ async function checkForData() {
     }
 
     if(nemHash.length>0 && dataLen>0) {
-      console.log('Hash detected');
+      console.log('Hash detected '+ nemHash);
+
       getHashMessage();
 
-      io.on('connection', function (socket) {
-            socket.emit('message', transMessage[0]+"xd");
+      io.sockets.on('connection', function (socket) {
+            socket.emit('message', transMessage[0]);
       });
 
     }
     else {
       console.log('Hash not detected');
       readUserData();
-      io.on('connection', function (socket) {
+      io.sockets.on('connection', function (socket) {
             socket.emit('message', 'Data cannot be retrieved!');
       });
     }
