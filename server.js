@@ -18,10 +18,12 @@ app.set('port', (process.env.PORT || 5000));
 app.get('/', function (req, res) {
   res.render('index')
 }).listen(app.get('port'), function() {
-  console.log('App is running, server is listening on port ', app.get('port'));
+  console.log('App is running, server is listening on portsss ', app.get('port'));
 });
 
-server.listen(3000);
+server.listen(3000,function(){
+  console.log('server runned on 3000');
+});
 //app.listen(3000, function () {
 //  console.log('Example app listening on port 3000!')
 //})
