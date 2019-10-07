@@ -2,6 +2,7 @@ const express = require('express');
 var firebase = require("firebase/app");
 require("firebase/database");
 var bodyParser = require('body-parser');
+
 const app = express();
 var server = require('http').Server(app);
 
@@ -154,11 +155,10 @@ async function getHashMessage() {
                 nemHash[0]='';
   						  console.log(err);
   					})
-}
-getHashMessage();
+} 
 
 async function checkForData() {
-  var io = require('socket.io').listen(server);
+  var io = require('socket.io')(server);
 
   while(true) {
     nemHash=[];
@@ -179,7 +179,8 @@ async function checkForData() {
 
       getHashMessage();
 
-      io.sockets.on('connection', function (socket) {
+      io.on('connection', function (socket) {
+            console.log("user connected");
             socket.emit('message', transMessage[0]);
       });
 
@@ -187,7 +188,7 @@ async function checkForData() {
     else {
       console.log('Hash not detected');
       readUserData();
-      io.sockets.on('connection', function (socket) {
+      io.on('connection', function (socket) {
             socket.emit('message', 'Data cannot be retrieved!');
       });
     }
